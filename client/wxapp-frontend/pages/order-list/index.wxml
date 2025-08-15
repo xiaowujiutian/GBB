@@ -1,0 +1,85 @@
+<view class="order-list-container">
+  <!-- 订单状态标签 -->
+  <van-tabs active="{{ activeTab }}" bind:change="onTabChange">
+    <van-tab title="全部" name="all"></van-tab>
+    <van-tab title="待确认" name="pending"></van-tab>
+    <van-tab title="已确认" name="confirmed"></van-tab>
+    <van-tab title="进行中" name="in_progress"></van-tab>
+    <van-tab title="已完成" name="completed"></van-tab>
+  </van-tabs>
+
+  <!-- 订单列表 -->
+  <van-pull-refresh value="{{ refreshing }}" bind:refresh="onRefresh">
+    <view class="orders-content" wx:if="{{ orders.length > 0 }}">
+      <view class="order-item" wx:for="{{ orders }}" wx:key="id" bind:tap="onOrderTap" data-id="{{ item.id }}">
+        <view class="order-header">
+          <text class="order-number">订单号: {{ item.orderNumber }}</text>
+          <van-tag 
+            type="{{ getStatusTagType(item.status) }}" 
+            size="mini"
+          >
+            {{ getStatusText(item.status) }}
+          </van-tag>
+        </view>
+        
+        <view class="order-content">
+          <view class="package-info">
+            <image src="{{ item.packageInfo.image || '/images/package-default.png' }}" class="package-image" />
+            <view class="package-details">
+              <text class="package-name">{{ item.packageInfo.name }}</text>
+              <text class="booking-time">预约时间: {{ item.bookingDate }} {{ item.bookingTime }}</text>
+              <text class="customer-info">客户: {{ item.customerInfo.name }} {{ item.customerInfo.phone }}</text>
+            </view>
+          </view>
+          
+          <view class="order-price">
+            <text class="price">¥{{ item.totalAmount }}</text>
+          </view>
+        </view>
+
+        <view class="order-actions">
+          <van-button 
+            wx:if="{{ item.status === 'pending' }}" 
+            size="mini" 
+            type="default"
+            bind:click="onCancelOrder"
+            data-id="{{ item.id }}"
+            catch:tap="true"
+          >
+            取消订单
+          </van-button>
+          
+          <van-button 
+            wx:if="{{ needPayment(item) }}" 
+            size="mini" 
+            type="primary"
+            bind:click="onPayOrder"
+            data-id="{{ item.id }}"
+            catch:tap="true"
+          >
+            去支付
+          </van-button>
+          
+          <van-button 
+            size="mini" 
+            type="default"
+            bind:click="onOrderTap"
+            data-id="{{ item.id }}"
+            catch:tap="true"
+          >
+            查看详情
+          </van-button>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <van-empty wx:else image="search" description="暂无订单数据" />
+  </van-pull-refresh>
+
+  <!-- 加载更多 -->
+  <view class="load-more" wx:if="{{ hasMore && orders.length > 0 }}">
+    <van-loading wx:if="{{ loadingMore }}" type="spinner" size="20px" />
+    <text wx:else bind:tap="loadMore">点击加载更多</text>
+  </view>
+</view>

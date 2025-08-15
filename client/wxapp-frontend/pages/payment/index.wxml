@@ -1,0 +1,65 @@
+<view class="payment-container">
+  <view wx:if="{{ loading }}">
+    <van-skeleton title row="3" />
+  </view>
+  
+  <view wx:else>
+    <!-- 订单信息 -->
+    <van-cell-group title="订单信息">
+      <view class="order-summary">
+        <text class="package-name">{{ orderInfo.packageInfo.name }}</text>
+        <text class="booking-info">{{ orderInfo.bookingDate }} {{ orderInfo.bookingTime }}</text>
+        <text class="customer-info">{{ orderInfo.customerInfo.name }} {{ orderInfo.customerInfo.phone }}</text>
+      </view>
+    </van-cell-group>
+
+    <!-- 支付类型选择 -->
+    <van-cell-group title="支付方式">
+      <van-radio-group value="{{ paymentType }}" bind:change="onPaymentTypeChange">
+        <van-cell 
+          wx:for="{{ paymentOptions }}" 
+          wx:key="value"
+          clickable 
+          bind:click="selectPaymentType" 
+          data-value="{{ item.value }}"
+        >
+          <view class="payment-option">
+            <view class="option-info">
+              <text class="option-title">{{ item.title }}</text>
+              <text class="option-desc">{{ item.desc }}</text>
+            </view>
+            <text class="option-amount">¥{{ item.amount }}</text>
+          </view>
+          <van-radio slot="right-icon" name="{{ item.value }}" />
+        </van-cell>
+      </van-radio-group>
+    </van-cell-group>
+
+    <!-- 费用明细 -->
+    <van-cell-group title="费用明细">
+      <van-cell title="套餐价格" value="¥{{ orderInfo.packageAmount }}" />
+      <van-cell title="服务费" value="¥{{ orderInfo.serviceAmount || '0.00' }}" />
+      <van-cell title="优惠金额" value="-¥{{ orderInfo.discountAmount || '0.00' }}" />
+      <van-divider />
+      <van-cell title="应付金额" value="¥{{ getCurrentPaymentAmount() }}" />
+    </van-cell-group>
+
+    <!-- 支付按钮 -->
+    <view class="payment-section">
+      <view class="payment-summary">
+        <text class="payment-label">{{ getPaymentTypeTitle() }}</text>
+        <text class="payment-amount">¥{{ getCurrentPaymentAmount() }}</text>
+      </view>
+      <van-button
+        type="primary"
+        size="large"
+        loading="{{ paying }}"
+        bind:click="onConfirmPayment"
+        custom-class="pay-button"
+        disabled="{{ !paymentType }}"
+      >
+        {{ paying ? '支付中...' : '确认支付' }}
+      </van-button>
+    </view>
+  </view>
+</view>

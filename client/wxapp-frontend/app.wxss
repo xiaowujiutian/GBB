@@ -1,0 +1,217 @@
+@import '@vant/weapp/common/index.wxss';
+
+/* 全局样式重置 */
+page {
+  background-color: #f7f8fa;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Segoe UI, Arial, Roboto, 'PingFang SC', 'miui', 'Hiragino Sans GB', 'Microsoft Yahei', sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* 通用容器样式 */
+.container {
+  min-height: 100vh;
+  background-color: #f7f8fa;
+}
+
+.page-container {
+  padding: 16px;
+  padding-bottom: calc(16px + env(safe-area-inset-bottom));
+}
+
+/* 全局loading样式 */
+.global-loading {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 9999 !important;
+}
+
+/* 底部安全区适配 */
+.safe-area-bottom {
+  padding-bottom: calc(16px + env(safe-area-inset-bottom));
+}
+
+/* 通用按钮样式 */
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  border: none !important;
+  border-radius: 8px !important;
+}
+
+.btn-secondary {
+  background-color: #f8f9fa !important;
+  color: #6c757d !important;
+  border: 1px solid #dee2e6 !important;
+  border-radius: 8px !important;
+}
+
+.action-btn {
+  margin: 8px !important;
+}
+
+/* 价格样式 */
+.price {
+  color: #ee0a24;
+  font-weight: bold;
+}
+
+.price-large {
+  font-size: 18px;
+}
+
+/* 状态文本颜色 */
+.status-pending { color: #ff976a; }
+.status-confirmed { color: #1989fa; }
+.status-completed { color: #07c160; }
+.status-cancelled { color: #969799; }
+
+/* 通用卡片样式 */
+.card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 16px;
+  border-bottom: 1px solid #f0f0f0;
+  font-weight: 500;
+  color: #323233;
+}
+
+.card-body {
+  padding: 16px;
+}
+
+/* 文本样式 */
+.text-primary {
+  color: #1989fa !important;
+}
+
+.text-success {
+  color: #07c160 !important;
+}
+
+.text-warning {
+  color: #ff976a !important;
+}
+
+.text-danger {
+  color: #ee0a24 !important;
+}
+
+.text-muted {
+  color: #969799 !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+/* 间距工具类 */
+.m-0 { margin: 0 !important; }
+.m-1 { margin: 8px !important; }
+.m-2 { margin: 16px !important; }
+.m-3 { margin: 24px !important; }
+
+.mt-0 { margin-top: 0 !important; }
+.mt-1 { margin-top: 8px !important; }
+.mt-2 { margin-top: 16px !important; }
+.mt-3 { margin-top: 24px !important; }
+
+.mb-0 { margin-bottom: 0 !important; }
+.mb-1 { margin-bottom: 8px !important; }
+.mb-2 { margin-bottom: 16px !important; }
+.mb-3 { margin-bottom: 24px !important; }
+
+.p-0 { padding: 0 !important; }
+.p-1 { padding: 8px !important; }
+.p-2 { padding: 16px !important; }
+.p-3 { padding: 24px !important; }
+
+.pt-1 { padding-top: 8px !important; }
+.pt-2 { padding-top: 16px !important; }
+.pt-3 { padding-top: 24px !important; }
+
+.pb-1 { padding-bottom: 8px !important; }
+.pb-2 { padding-bottom: 16px !important; }
+.pb-3 { padding-bottom: 24px !important; }
+
+/* Flex 布局工具类 */
+.d-flex {
+  display: flex !important;
+}
+
+.flex-column {
+  flex-direction: column !important;
+}
+
+.justify-content-center {
+  justify-content: center !important;
+}
+
+.justify-content-between {
+  justify-content: space-between !important;
+}
+
+.align-items-center {
+  align-items: center !important;
+}
+
+.flex-1 {
+  flex: 1 !important;
+}
+
+/* 圆角工具类 */
+.rounded {
+  border-radius: 8px !important;
+}
+
+.rounded-lg {
+  border-radius: 12px !important;
+}
+
+.rounded-circle {
+  border-radius: 50% !important;
+}
+
+/* 阴影工具类 */
+.shadow-sm {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.shadow {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.shadow-lg {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* 响应式工具类 */
+@media screen and (max-width: 375px) {
+  .page-container {
+    padding: 12px;
+  }
+  
+  .card {
+    margin-bottom: 12px;
+  }
+  
+  .card-header,
+  .card-body {
+    padding: 12px;
+  }
+  
+  page {
+    font-size: 13px;
+  }
+}

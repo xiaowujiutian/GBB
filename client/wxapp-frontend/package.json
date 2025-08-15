@@ -1,0 +1,16 @@
+{
+  "name": "wxapp-frontend",
+  "version": "1.0.0",
+  "description": "乖宝宝儿童影楼微信小程序前端",
+  "main": "app.js",
+  "scripts": {
+    "build": "echo '请使用微信开发者工具构建 npm'",
+    "lint": "echo '可集成 eslint 或 stylelint'",
+    "test": "echo '前端测试建议在微信开发者工具中进行'"
+  },
+  "dependencies": {
+    "@vant/weapp": "^1.11.7"
+  },
+  "author": "liyong",
+  "license": "MIT"
+}

@@ -1,0 +1,6 @@
+.package-detail-container { padding: 16px; }
+.loading { text-align: center; margin: 32px 0; }
+.package-description { color: #888; margin: 12px 0; }
+.package-duration { color: #555; font-size: 13px; margin-bottom: 8px; }
+.package-features { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.feature-tag { background: #f5f5f5; border-radius: 4px; padding: 2px 10px; font-size: 12px; }

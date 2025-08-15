@@ -1,0 +1,58 @@
+<view class="profile-container">
+  <!-- 用户信息卡片 -->
+  <view class="user-card">
+    <view wx:if="{{ userInfo }}" class="user-info">
+      <van-image
+        width="80px"
+        height="80px"
+        radius="50%"
+        src="{{ userInfo.avatarUrl || '/images/default-avatar.png' }}"
+        class="avatar"
+      />
+      <view class="user-details">
+        <text class="username">{{ userInfo.nickName || '未设置昵称' }}</text>
+        <text class="phone">{{ userInfo.phone || '未绑定手机号' }}</text>
+      </view>
+    </view>
+
+    <view wx:else class="login-prompt">
+      <van-image
+        width="80px"
+        height="80px"
+        radius="50%"
+        src="/images/default-avatar.png"
+        class="avatar"
+      />
+      <view class="login-info">
+        <text class="login-text">点击登录</text>
+        <van-button size="mini" type="primary" bind:click="onLogin">微信登录</van-button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <van-cell-group title="订单管理" wx:if="{{ userInfo }}">
+    <van-cell title="我的订单" is-link bind:click="goToOrders" />
+    <van-cell title="预约记录" is-link bind:click="goToBookingHistory" />
+  </van-cell-group>
+
+  <van-cell-group title="个人设置" wx:if="{{ userInfo }}">
+    <van-cell title="编辑个人信息" is-link bind:click="editProfile" />
+    <van-cell title="联系客服" is-link bind:click="contactService" />
+    <van-cell title="意见反馈" is-link bind:click="feedback" />
+  </van-cell-group>
+
+  <van-cell-group title="其他">
+    <van-cell title="关于我们" is-link bind:click="aboutUs" />
+    <van-cell title="隐私政策" is-link bind:click="privacyPolicy" />
+    <van-cell title="服务条款" is-link bind:click="serviceTerms" />
+  </van-cell-group>
+
+  <!-- 退出登录 -->
+  <view class="logout-section" wx:if="{{ userInfo }}">
+    <van-divider />
+    <van-button type="default" size="large" bind:click="onLogout" custom-class="logout-btn">
+      退出登录
+    </van-button>
+  </view>
+</view>

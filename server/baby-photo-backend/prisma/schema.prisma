@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  openid    String   @unique
+  nickname  String?
+  avatar    String?
+  phone     String?
+  createdAt DateTime @default(now()) @map("created_at")
+  orders    Order[]
+
+  @@map("users")
+  @@index([openid])
+  @@index([phone])
+}
+
+model Package {
+  id              Int      @id @default(autoincrement())
+  name            String
+  description     String?
+  price           Decimal  @db.Decimal(10, 2)
+  deposit         Decimal  @db.Decimal(10, 2)
+  durationMinutes Int      @map("duration_minutes")
+  includes        String[]
+  createdAt       DateTime @default(now()) @map("created_at")
+  orders          Order[]
+
+  @@map("packages")
+}
+
+model TimeSlot {
+  id        Int      @id @default(autoincrement())
+  date      DateTime @db.Date
+  startTime DateTime @map("start_time") @db.Time(6)
+  endTime   DateTime @map("end_time") @db.Time(6)
+  isBooked  Boolean  @default(false) @map("is_booked")
+  createdAt DateTime @default(now()) @map("created_at")
+  orders    Order[]
+
+  @@map("time_slots")
+}
+
+model Order {
+  id              String    @id @default(uuid())
+  orderNo         String    @unique @map("order_no")
+  userId          Int       @map("user_id")
+  packageId       Int       @map("package_id")
+  timeSlotId      Int       @map("time_slot_id")
+  appointmentDate DateTime  @map("appointment_date")
+  totalAmount     Decimal   @map("total_amount") @db.Decimal(10, 2)
+  depositAmount   Decimal   @map("deposit_amount") @db.Decimal(10, 2)
+  paidAmount      Decimal   @default(0) @map("paid_amount") @db.Decimal(10, 2)
+  paymentStatus   String    @default("CREATED") @map("payment_status")
+  orderStatus     String    @default("CREATED") @map("order_status")
+  notes           String?
+  childrenCount   Int       @default(1) @map("children_count")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+  package         Package   @relation(fields: [packageId], references: [id])
+  timeSlot        TimeSlot  @relation(fields: [timeSlotId], references: [id])
+  user            User      @relation(fields: [userId], references: [id])
+  payments        Payment[]
+
+  @@map("orders")
+}
+
+model Payment {
+  id            String    @id @default(uuid())
+  orderId       String    @map("order_id")
+  paymentType   String    @map("payment_type")
+  amount        Decimal   @db.Decimal(10, 2)
+  status        String    @default("CREATED")
+  transactionId String?   @map("transaction_id")
+  paidAt        DateTime? @map("paid_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  order         Order     @relation(fields: [orderId], references: [id])
+
+  @@map("payments")
+}

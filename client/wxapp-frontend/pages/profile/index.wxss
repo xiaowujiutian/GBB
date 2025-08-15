@@ -1,0 +1,8 @@
+.profile-container { padding: 16px; }
+.edit-actions { display: flex; gap: 12px; margin-top: 16px; }
+.orders-section { margin-top: 32px; }
+.orders-title { font-weight: bold; margin-bottom: 12px; }
+.orders-list { display: flex; flex-direction: column; gap: 16px; }
+.order-item { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #eee; padding: 12px; }
+.order-info { color: #555; font-size: 13px; margin-top: 8px; }
+.empty { text-align: center; color: #888; margin: 32px 0; }

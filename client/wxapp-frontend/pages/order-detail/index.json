@@ -1,0 +1,13 @@
+{
+  "usingComponents": {
+    "van-cell": "@vant/weapp/cell/index",
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-button": "@vant/weapp/button/index",
+    "van-tag": "@vant/weapp/tag/index",
+    "van-divider": "@vant/weapp/divider/index",
+    "van-steps": "@vant/weapp/steps/index",
+    "van-step": "@vant/weapp/step/index",
+    "van-skeleton": "@vant/weapp/skeleton/index"
+  },
+  "navigationBarTitleText": "订单详情"
+}

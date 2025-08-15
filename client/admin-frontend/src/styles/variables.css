@@ -1,0 +1,58 @@
+:root {
+  /* 主色调 */
+  --primary-color: #1890ff;
+  --primary-color-hover: #40a9ff;
+  --primary-color-active: #096dd9;
+  
+  /* 辅助色 */
+  --success-color: #52c41a;
+  --success-color-hover: #73d13d;
+  --success-color-active: #389e0d;
+  --warning-color: #faad14;
+  --warning-color-hover: #ffc53d;
+  --warning-color-active: #d48806;
+  --error-color: #ff4d4f;
+  --error-color-hover: #ff7875;
+  --error-color-active: #d9363e;
+  --info-color: #1890ff;
+  --info-color-hover: #40a9ff;
+  --info-color-active: #096dd9;
+  
+  /* 中性色 */
+  --text-color: #000000d9;
+  --text-color-secondary: #00000073;
+  --text-color-disabled: #00000040;
+  --text-color-inverse: #ffffff;
+  --border-color: #d9d9d9;
+  --border-color-hover: #40a9ff;
+  --border-color-focus: #1890ff;
+  --background-color: #fafafa;
+  --background-color-light: #ffffff;
+  --background-color-dark: #f0f0f0;
+  --white: #ffffff;
+  --black: #000000;
+  
+  /* 字体 */
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-size-base: 14px;
+  --font-size-sm: 12px;
+  --font-size-lg: 16px;
+  --font-size-xl: 18px;
+  
+  /* 间距 */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  
+  /* 边框半径 */
+  --border-radius: 6px;
+  --border-radius-sm: 2px;
+  --border-radius-lg: 8px;
+  
+  /* 阴影 */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}

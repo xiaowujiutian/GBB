@@ -1,0 +1,4 @@
+.search-container { padding: 16px; }
+.empty { text-align: center; color: #888; margin: 32px 0; }
+.results-list { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+.result-item { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #eee; padding: 10px; }

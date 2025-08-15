@@ -1,0 +1,93 @@
+<view class="search-container">
+  <!-- 搜索框 -->
+  <view class="search-section">
+    <van-search
+      value="{{ searchKeyword }}"
+      placeholder="输入手机号或昵称搜索"
+      show-action
+      bind:search="onSearch"
+      bind:change="onSearchChange"
+    >
+      <view slot="action" bind:tap="onSearch">搜索</view>
+    </van-search>
+  </view>
+
+  <!-- 搜索类型标签 -->
+  <van-tabs active="{{ activeTab }}" bind:change="onTabChange">
+    <van-tab title="用户" name="users"></van-tab>
+    <van-tab title="订单" name="orders"></van-tab>
+  </van-tabs>
+
+  <!-- 搜索结果 -->
+  <view class="search-results" wx:if="{{ hasSearched }}">
+    <!-- 用户搜索结果 -->
+    <view wx:if="{{ activeTab === 'users' }}">
+      <van-cell-group wx:if="{{ searchResults.length > 0 }}">
+        <van-cell 
+          wx:for="{{ searchResults }}" 
+          wx:key="id"
+          title="{{ item.nickName || item.name }}"
+          label="手机号: {{ item.phone }}"
+          bind:click="onUserTap"
+          data-user="{{ item }}"
+          is-link
+        >
+          <view slot="right-icon">
+            <van-tag wx:if="{{ item.isVip }}" type="primary" size="mini">VIP</van-tag>
+          </view>
+        </van-cell>
+      </van-cell-group>
+    </view>
+
+    <!-- 订单搜索结果 -->
+    <view wx:if="{{ activeTab === 'orders' }}">
+      <view class="order-list" wx:if="{{ searchResults.length > 0 }}">
+        <view class="order-item" wx:for="{{ searchResults }}" wx:key="id" bind:tap="onOrderTap" data-id="{{ item.id }}">
+          <view class="order-header">
+            <text class="order-number">{{ item.orderNumber }}</text>
+            <van-tag type="{{ getStatusTagType(item.status) }}" size="mini">
+              {{ getStatusText(item.status) }}
+            </van-tag>
+          </view>
+          
+          <view class="order-info">
+            <text class="package-name">{{ item.packageInfo.name }}</text>
+            <text class="customer-info">{{ item.customerInfo.name }} - {{ item.customerInfo.phone }}</text>
+            <text class="booking-time">{{ item.bookingDate }} {{ item.bookingTime }}</text>
+          </view>
+          
+          <view class="order-amount">
+            <text class="amount">¥{{ item.totalAmount }}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空结果 -->
+    <van-empty wx:if="{{ searchResults.length === 0 }}" image="search" description="未找到相关结果" />
+  </view>
+
+  <!-- 搜索历史 -->
+  <view class="search-history" wx:if="{{ !hasSearched && searchHistory.length > 0 }}">
+    <view class="history-header">
+      <text class="history-title">搜索历史</text>
+      <text class="clear-history" bind:tap="clearHistory">清空</text>
+    </view>
+    <view class="history-list">
+      <view 
+        class="history-item" 
+        wx:for="{{ searchHistory }}" 
+        wx:key="index"
+        bind:tap="onHistoryTap"
+        data-keyword="{{ item }}"
+      >
+        {{ item }}
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <van-loading wx:if="{{ searching }}" type="spinner" size="30px" vertical custom-class="global-loading">
+    搜索中...
+  </van-loading>
+</view>

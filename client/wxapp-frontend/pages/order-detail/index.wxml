@@ -1,0 +1,119 @@
+<view class="order-detail-container">
+  <view wx:if="{{ loading }}">
+    <van-skeleton title row="5" />
+  </view>
+  
+  <view wx:else>
+    <!-- 订单状态 -->
+    <view class="order-status-section">
+      <view class="status-header">
+        <van-tag type="{{ getStatusTagType(orderInfo.status) }}" size="large">
+          {{ getStatusText(orderInfo.status) }}
+        </van-tag>
+        <text class="order-number">订单号: {{ orderInfo.orderNumber }}</text>
+      </view>
+      
+      <!-- 订单进度 -->
+      <van-steps direction="vertical" active="{{ getStepActive(orderInfo.status) }}" active-color="#1989fa">
+        <van-step>
+          <text>订单提交</text>
+          <view slot="desc">{{ orderInfo.createdAt }}</view>
+        </van-step>
+        <van-step>
+          <text>订单确认</text>
+          <view slot="desc">{{ orderInfo.confirmedAt || '待确认' }}</view>
+        </van-step>
+        <van-step>
+          <text>服务进行</text>
+          <view slot="desc">{{ orderInfo.startedAt || '待开始' }}</view>
+        </van-step>
+        <van-step>
+          <text>服务完成</text>
+          <view slot="desc">{{ orderInfo.completedAt || '待完成' }}</view>
+        </van-step>
+      </van-steps>
+    </view>
+
+    <!-- 套餐信息 -->
+    <van-cell-group title="套餐信息">
+      <view class="package-info">
+        <image src="{{ orderInfo.packageInfo.image || '/images/package-default.png' }}" class="package-image" />
+        <view class="package-details">
+          <text class="package-name">{{ orderInfo.packageInfo.name }}</text>
+          <text class="package-price">¥{{ orderInfo.packageInfo.price }}</text>
+        </view>
+      </view>
+    </van-cell-group>
+
+    <!-- 预约信息 -->
+    <van-cell-group title="预约信息">
+      <van-cell title="预约日期" value="{{ orderInfo.bookingDate }}" />
+      <van-cell title="预约时间" value="{{ orderInfo.bookingTime }}" />
+      <van-cell title="服务地址" value="{{ orderInfo.serviceAddress || '待确定' }}" />
+    </van-cell-group>
+
+    <!-- 客户信息 -->
+    <van-cell-group title="客户信息">
+      <van-cell title="姓名" value="{{ orderInfo.customerInfo.name }}" />
+      <van-cell title="手机号" value="{{ orderInfo.customerInfo.phone }}" />
+      <van-cell title="备注" value="{{ orderInfo.customerInfo.remark || '无' }}" />
+    </van-cell-group>
+
+    <!-- 费用明细 -->
+    <van-cell-group title="费用明细">
+      <van-cell title="套餐价格" value="¥{{ orderInfo.packageAmount }}" />
+      <van-cell title="服务费" value="¥{{ orderInfo.serviceAmount || '0.00' }}" />
+      <van-cell title="优惠金额" value="-¥{{ orderInfo.discountAmount || '0.00' }}" />
+      <van-divider />
+      <van-cell title="总计" value="¥{{ orderInfo.totalAmount }}" />
+    </van-cell-group>
+
+    <!-- 支付信息 -->
+    <van-cell-group title="支付信息" wx:if="{{ orderInfo.payments && orderInfo.payments.length > 0 }}">
+      <view class="payment-item" wx:for="{{ orderInfo.payments }}" wx:key="id">
+        <van-cell 
+          title="{{ getPaymentTypeText(item.type) }}" 
+          value="¥{{ item.amount }}"
+          label="{{ item.paidAt || '未支付' }}"
+        >
+          <van-tag slot="right-icon" type="{{ item.status === 'paid' ? 'success' : 'warning' }}" size="mini">
+            {{ item.status === 'paid' ? '已支付' : '待支付' }}
+          </van-tag>
+        </van-cell>
+      </view>
+    </van-cell-group>
+
+    <!-- 底部操作栏 -->
+    <view class="bottom-actions">
+      <van-button 
+        wx:if="{{ orderInfo.status === 'pending' }}"
+        type="default" 
+        size="large"
+        bind:click="onCancelOrder"
+        custom-class="action-btn"
+      >
+        取消订单
+      </van-button>
+      
+      <van-button 
+        wx:if="{{ needPayment(orderInfo) }}"
+        type="primary" 
+        size="large"
+        bind:click="onPayOrder"
+        custom-class="action-btn"
+      >
+        去支付
+      </van-button>
+      
+      <van-button 
+        wx:if="{{ orderInfo.status === 'completed' }}"
+        type="primary" 
+        size="large"
+        bind:click="onRateService"
+        custom-class="action-btn"
+      >
+        评价服务
+      </van-button>
+    </view>
+  </view>
+</view>

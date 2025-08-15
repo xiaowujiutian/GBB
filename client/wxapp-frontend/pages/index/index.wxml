@@ -1,0 +1,134 @@
+<view class="index-container">
+  <!-- 搜索栏 -->
+  <view class="search-section">
+    <van-search
+      value="{{ searchKeyword }}"
+      placeholder="搜索套餐名称"
+      shape="round"
+      background="#f7f8fa"
+      bind:search="onSearch"
+      bind:change="onSearchChange"
+    />
+  </view>
+
+  <!-- 筛选和排序 -->
+  <view class="filter-section">
+    <view class="filter-item {{ priceSort === 'asc' ? 'active' : '' }}" bind:tap="sortByPrice" data-sort="asc">
+      价格升序
+    </view>
+    <view class="filter-item {{ priceSort === 'desc' ? 'active' : '' }}" bind:tap="sortByPrice" data-sort="desc">
+      价格降序
+    </view>
+    <view class="filter-item {{ !priceSort ? 'active' : '' }}" bind:tap="clearSort">
+      默认排序
+    </view>
+  </view>
+
+  <!-- 套餐列表 -->
+  <van-pull-refresh value="{{ refreshing }}" bind:refresh="onRefresh">
+    <view class="packages-list" wx:if="{{ packages.length > 0 }}">
+      <van-card
+        wx:for="{{ packages }}"
+        wx:key="id"
+        price="{{ item.price }}"
+        desc="{{ item.description }}"
+        title="{{ item.name }}"
+        thumb="{{ item.image || '/images/package-default.png' }}"
+        custom-class="package-card"
+        bind:click="onPackageTap"
+        data-id="{{ item.id }}"
+      >
+        <view slot="tags">
+          <van-tag
+            wx:if="{{ item.isHot }}"
+            type="danger"
+            size="mini"
+            custom-class="package-tag"
+          >
+            热门
+          </van-tag>
+          <van-tag
+            wx:if="{{ item.isNew }}"
+            type="primary"
+            size="mini"
+            custom-class="package-tag"
+          >
+            新品
+          </van-tag>
+          <van-tag
+            wx:if="{{ !item.isActive }}"
+            type="default"
+            size="mini"
+            custom-class="package-tag"
+          >
+            已下架
+          </van-tag>
+        </view>
+        
+        <view slot="footer">
+          <view class="package-stats">
+            <text class="stat-item">预约: {{ item.bookingCount || 0 }}次</text>
+            <text class="stat-item">评分: {{ item.rating || 5.0 }}</text>
+          </view>
+          <van-button
+            size="mini"
+            type="primary"
+            custom-class="book-btn"
+            disabled="{{ !item.isActive }}"
+            bind:click="onBookNow"
+            data-id="{{ item.id }}"
+            catch:tap="true"
+          >
+            {{ item.isActive ? '立即预约' : '已下架' }}
+          </van-button>
+        </view>
+      </van-card>
+    </view>
+
+    <!-- 空状态 -->
+    <van-empty
+      wx:else
+      image="search"
+      description="{{ searchKeyword ? '暂无搜索结果' : '暂无套餐数据' }}"
+    />
+  </van-pull-refresh>
+
+  <!-- 加载更多 -->
+  <view class="load-more" wx:if="{{ hasMore && packages.length > 0 }}">
+    <van-loading wx:if="{{ loadingMore }}" type="spinner" size="20px" />
+    <text wx:else bind:tap="loadMore">点击加载更多</text>
+  </view>
+
+  <!-- 全局loading -->
+  <van-loading wx:if="{{ loading }}" type="spinner" size="30px" vertical custom-class="global-loading">
+    加载中...
+  </van-loading>
+</view>
+    </view>
+  </view>
+
+  <!-- 推荐服务 -->
+  <view class="recommend-section">
+    <van-divider content-position="center">推荐服务</van-divider>
+    
+    <view class="recommend-list">
+      <view
+        wx:for="{{ recommendServices }}"
+        wx:key="id"
+        class="recommend-item"
+        bind:tap="onServiceTap"
+        data-id="{{ item.id }}"
+      >
+        <image src="{{ item.image }}" class="recommend-image" />
+        <view class="recommend-info">
+          <text class="recommend-title">{{ item.name }}</text>
+          <text class="recommend-desc">{{ item.desc }}</text>
+          <view class="recommend-footer">
+            <text class="recommend-price">¥{{ item.price }}</text>
+            <view class="recommend-action">立即预订</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

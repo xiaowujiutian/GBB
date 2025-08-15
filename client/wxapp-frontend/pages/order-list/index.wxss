@@ -1,0 +1,123 @@
+.order-list-container {
+  padding: 16px;
+  background-color: #f7f8fa;
+  min-height: 100vh;
+}
+
+.loading {
+  text-align: center;
+  margin: 32px 0;
+}
+
+.empty {
+  text-align: center;
+  color: #888;
+  margin: 32px 0;
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.order-item {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.order-info {
+  color: #555;
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+.picker-value {
+  color: #888;
+}
+
+.no-more {
+  text-align: center;
+  color: #aaa;
+  margin: 16px 0;
+}
+
+.orders-content {
+  padding: 8px 16px 20px;
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.order-number {
+  font-size: 12px;
+  color: #969799;
+}
+
+.order-content {
+  margin-bottom: 12px;
+}
+
+.package-info {
+  display: flex;
+  align-items: flex-start;
+}
+
+.package-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 4px;
+  margin-right: 12px;
+}
+
+.package-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.package-name {
+  font-weight: 500;
+  color: #323233;
+  margin-bottom: 4px;
+}
+
+.booking-time,
+.customer-info {
+  font-size: 12px;
+  color: #969799;
+  margin-bottom: 2px;
+}
+
+.order-price {
+  text-align: right;
+  margin-top: 8px;
+}
+
+.price {
+  font-size: 16px;
+  font-weight: bold;
+  color: #ee0a24;
+}
+
+.order-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 12px;
+}
+
+.load-more {
+  text-align: center;
+  padding: 20px;
+  color: #969799;
+  font-size: 14px;
+}

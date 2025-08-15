@@ -1,0 +1,78 @@
+/* 简单样式，可根据实际UI调整 */
+.packages-container { padding: 16px; }
+.loading { text-align: center; margin: 32px 0; }
+.packages-list { display: flex; flex-direction: column; gap: 16px; }
+.package-item { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #eee; padding: 12px; }
+.package-description { color: #888; margin: 8px 0; }
+.package-duration { color: #555; font-size: 12px; }
+.package-features { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+.feature-tag { background: #f5f5f5; border-radius: 4px; padding: 2px 8px; font-size: 12px; }
+.package-list {
+  padding: 16px;
+}
+.index-container {
+  background-color: #f7f8fa;
+  min-height: 100vh;
+  padding-bottom: 20px;
+}
+
+.search-section {
+  padding: 16px;
+  background-color: #fff;
+  margin-bottom: 8px;
+}
+
+.filter-section {
+  display: flex;
+  padding: 12px 16px;
+  background-color: #fff;
+  border-bottom: 1px solid #ebedf0;
+  margin-bottom: 8px;
+}
+
+.filter-item {
+  flex: 1;
+  text-align: center;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: #646566;
+  border-radius: 16px;
+  margin: 0 4px;
+}
+
+.filter-item.active {
+  background-color: #1989fa;
+  color: #fff;
+}
+
+.packages-list {
+  padding: 0 16px;
+}
+
+.package-card {
+  margin-bottom: 16px !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+.package-stats {
+  display: flex;
+  font-size: 12px;
+  color: #969799;
+  margin-top: 4px;
+}
+
+.stat-item {
+  margin-right: 16px;
+}
+
+.book-btn {
+  margin-left: 8px !important;
+}
+
+.load-more {
+  text-align: center;
+  padding: 20px;
+  color: #969799;
+  font-size: 14px;
+}

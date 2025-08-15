@@ -1,0 +1,82 @@
+<view class="package-detail-container">
+  <view wx:if="{{ loading }}">
+    <van-skeleton title row="3" />
+  </view>
+  
+  <view wx:else>
+    <!-- 套餐图片 -->
+    <view class="package-image-section">
+      <van-image
+        width="100%"
+        height="250"
+        src="{{ packageInfo.image || '/images/package-default.png' }}"
+        fit="cover"
+        radius="0"
+      />
+    </view>
+
+    <!-- 套餐基本信息 -->
+    <van-cell-group>
+      <view class="package-header">
+        <view class="package-title">{{ packageInfo.name }}</view>
+        <view class="package-price">¥{{ packageInfo.price }}</view>
+        <view class="package-tags">
+          <van-tag wx:if="{{ packageInfo.isHot }}" type="danger" size="mini">热门</van-tag>
+          <van-tag wx:if="{{ packageInfo.isNew }}" type="primary" size="mini">新品</van-tag>
+        </view>
+      </view>
+    </van-cell-group>
+
+    <!-- 套餐详情 -->
+    <van-cell-group title="套餐详情">
+      <van-cell title="服务时长" value="{{ packageInfo.duration || '暂无' }}" />
+      <van-cell title="服务人数" value="{{ packageInfo.serviceStaff || '暂无' }}" />
+      <van-cell title="适用场景" value="{{ packageInfo.applicableScene || '暂无' }}" />
+      <van-cell title="预约次数" value="{{ packageInfo.bookingCount || 0 }}次" />
+    </van-cell-group>
+
+    <!-- 套餐描述 -->
+    <van-cell-group title="详细描述">
+      <view class="package-description">
+        {{ packageInfo.description || '暂无描述' }}
+      </view>
+    </van-cell-group>
+
+    <!-- 服务特色 -->
+    <van-cell-group title="服务特色" wx:if="{{ packageInfo.features && packageInfo.features.length > 0 }}">
+      <view class="features-list">
+        <view class="feature-item" wx:for="{{ packageInfo.features }}" wx:key="index">
+          <text class="feature-dot">•</text>
+          <text class="feature-text">{{ item }}</text>
+        </view>
+      </view>
+    </van-cell-group>
+
+    <!-- 注意事项 -->
+    <van-cell-group title="注意事项" wx:if="{{ packageInfo.notes && packageInfo.notes.length > 0 }}">
+      <view class="notes-list">
+        <view class="note-item" wx:for="{{ packageInfo.notes }}" wx:key="index">
+          <text class="note-number">{{ index + 1 }}.</text>
+          <text class="note-text">{{ item }}</text>
+        </view>
+      </view>
+    </van-cell-group>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-action">
+    <view class="price-info">
+      <text class="price-label">价格：</text>
+      <text class="price-value">¥{{ packageInfo.price || '0' }}</text>
+    </view>
+    <van-button
+      type="primary"
+      size="large"
+      custom-class="book-button"
+      bind:click="onBookPackage"
+      disabled="{{ !packageInfo.isActive }}"
+    >
+      {{ packageInfo.isActive ? '立即预约' : '暂不可预约' }}
+    </van-button>
+  </view>
+</view>

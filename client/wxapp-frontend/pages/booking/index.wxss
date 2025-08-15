@@ -1,0 +1,111 @@
+.booking-container {
+  background-color: #f7f8fa;
+  min-height: 100vh;
+  padding-bottom: 120px;
+}
+
+.picker-value { color: #888; }
+.time-slot-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+
+.submit-section {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  padding: 16px;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.total-price {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.total-price .label {
+  color: #323233;
+}
+
+.total-price .price {
+  color: #ee0a24;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.submit-btn {
+  width: 100% !important;
+  border-radius: 8px !important;
+}
+
+/* 服务卡片样式 */
+.van-card {
+  margin: 16px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* 单元格组样式 */
+.van-cell-group {
+  margin: 16px 0;
+}
+
+.van-cell-group__title {
+  padding-left: 16px;
+  color: #323233;
+  font-weight: 500;
+}
+
+/* 自定义单元格样式 */
+.van-cell {
+  background-color: #fff;
+}
+
+.van-cell:not(:last-child)::after {
+  border-bottom: 1px solid #ebedf0;
+}
+
+/* 字段输入框样式 */
+.van-field__label {
+  color: #646566;
+  font-weight: 500;
+}
+
+/* 步进器样式 */
+.van-stepper {
+  margin-right: 8px;
+}
+
+/* 分割线样式 */
+.van-divider {
+  margin: 0;
+  border-color: #ebedf0;
+}
+
+/* 弹窗样式 */
+.van-popup {
+  border-radius: 16px 16px 0 0;
+}
+
+/* 日历样式 */
+.van-calendar {
+  border-radius: 16px 16px 0 0;
+}
+
+/* 响应式适配 */
+@media screen and (max-width: 375px) {
+  .submit-section {
+    padding: 12px;
+  }
+  
+  .total-price {
+    font-size: 14px;
+  }
+  
+  .total-price .price {
+    font-size: 18px;
+  }
+}
