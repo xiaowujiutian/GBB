@@ -171,8 +171,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               placement="bottomRight"
             >
               <Space style={{ cursor: 'pointer' }}>
-                <Avatar src={user?.avatar} icon={<UserOutlined />} />
-                <span>{user?.username}</span>
+                <Avatar icon={<UserOutlined />} />
+                <span>{user?.nickname}</span>
               </Space>
             </Dropdown>
           </Space>

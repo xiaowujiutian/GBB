@@ -1,24 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { Spin } from 'antd';
-import { useAppSelector, useAppDispatch } from '@/store';
-import { fetchUserInfo } from '@/store/authSlice';
+import { useAppSelector } from '@/store';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { isAuthenticated, user, loading, token } = useAppSelector((state) => state.auth);
-  const dispatch = useAppDispatch();
+  const { isAuthenticated, isLoading, token } = useAppSelector((state) => state.auth);
 
-  useEffect(() => {
-    if (token && !user && !loading) {
-      dispatch(fetchUserInfo());
-    }
-  }, [token, user, loading, dispatch]);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <div style={{
         display: 'flex',
@@ -39,3 +31,5 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 };
 
 export default ProtectedRoute;
+
+  

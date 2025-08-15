@@ -1,18 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
-import authSlice from './authSlice';
-import userSlice from './userSlice';
-import orderSlice from './orderSlice';
-import packageSlice from './packageSlice';
-import globalSlice from './globalSlice';
+import authReducer from './authSlice';
 
 export const store = configureStore({
   reducer: {
-    auth: authSlice,
-    user: userSlice,
-    order: orderSlice,
-    package: packageSlice,
-    global: globalSlice,
+    auth: authReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

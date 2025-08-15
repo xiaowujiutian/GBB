@@ -1,5 +1,99 @@
+旧的公钥liyong@dely:~/gbb$ cat ~/.ssh/id_ed25519.pub
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL8hbLkVt7/E1W6gUt5rQF/Dg+QC4yAy20izjThGcqOj chinalnhsly@hotmail.com
+旧的私钥lnhsly66
+
+
 # Git 常用命令速查
+
+新库公钥liyong@dely:~/gbb$ cat ~/.ssh/id_ed25519_xiaowujiutian.pub
+新库私钥  空的
+
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBYSZ9WvTzD1QZIgxLN8h0T3V+jDbhD65sAK6uEeebZe xiaowujiutian@hotmail.com
+
+邮箱密码
+    xiaowujiutian@hotmail.com   Xwjt-760707@
+SSH 地址：
+   git@github.com:xiaowujiutian/GBB.git
+
+echo "# GBB" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/xiaowujiutian/GBB.git
+git push -u origin main
+git push origin v1.0.0
 ##  git实际操作指南：
+# Git 常用命令速查
+
+## GBB项目Git操作记录
+
+### 项目初始化（已完成）
+```bash
+git init
+git add .gitignore README.md
+git commit -m "feat: 初始化GBB管理系统项目"
+git branch -M main
+git remote add origin https://github.com/xiaowujiutian/GBB.git
+```
+
+### 解决嵌套Git仓库问题（当前操作）
+```bash
+# 检查嵌套仓库
+find . -name ".git" -type d
+
+# 清理子仓库.git目录
+rm -rf ./client/wxapp-frontend/.git
+rm -rf ./server/.git  
+rm -rf ./server/baby-photo-backend/.git
+
+# 重新添加所有文件
+git add .
+git commit -m "feat: 整合所有子项目到统一仓库"
+git push -u origin main
+
+# 创建版本标签
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+### 日常开发工作流
+```bash
+# 开发前
+git status                  # 检查状态
+git pull origin main        # 拉取最新代码
+
+# 开发中
+git add .                   # 添加修改文件
+git commit -m "feat: 功能描述"  # 提交修改
+
+# 开发后  
+git push origin main        # 推送代码
+git tag v1.0.1             # 更新版本标签
+git push origin v1.0.1     # 推送标签
+```
+
+## 常用命令速查
+<!-- ...existing code... -->
+
+
+
+# 1. 查看当前Git配置
+git config --list | grep user
+
+# 2. 如果需要更新为正确的用户名和邮箱
+git config --global user.name "xiaowujiutian"
+git config --global user.email "xiaowujiutian@hotmail.com"
+
+# 3. 验证配置是否更新
+git config --global user.name
+git config --global user.email
+
+
+
+
+
+
 #### 新项目git命令，初始化、创建、推送的实际操作：
 git status                             # 查看当前状态
 git init                               # 初始化本地仓库
@@ -27,12 +121,12 @@ git push origin 1.0.1
 #### 官方的命令提示：
 git init
 git add README.md
-git commit -m "first commit"
+git commit -m "GBB管理系统的根目录"
 git branch -M main
-git remote add origin https://github.com/chinalnhsly/wxapp-frontend.git
+git remote add origin https://github.com/xiaowujiutian/GBB.git
 git push -u origin main
 …or push an existing repository from the command line
-git remote add origin https://github.com/chinalnhsly/wxapp-frontend.git
+###### git remote add origin https://github.com/chinalnhsly/wxapp-frontend.git  旧仓库
 git branch -M main
 git push -u origin main
 ## 1. 基本配置
@@ -140,3 +234,151 @@ git cherry-pick <commit_id>    # 应用指定提交到当前分支
 ---
 
 > 前端开发建议：每次开发前先 `git pull`，开发完成后及时 `git push`，保持分支同步。
+# 更改git仓库和公钥
+我看到您的SSH测试显示连接的是 `chinalnhsly` 账户，而不是 `xiaowujiutian` 账户。这说明您的SSH密钥关联的是 `chinalnhsly` 的GitHub账户，但您要推送的仓库是 `xiaowujiutian/GBB.git`。
+
+这里有几个解决方案：
+
+## 方案1：为xiaowujiutian账户生成新的SSH密钥（推荐）
+
+````bash
+# 1. 为xiaowujiutian账户生成新的SSH密钥
+ssh-keygen -t ed25519 -C "xiaowujiutian@hotmail.com" -f ~/.ssh/id_ed25519_xiaowujiutian
+
+# 2. 启动ssh-agent并添加新密钥
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519_xiaowujiutian
+
+# 3. 查看新生成的公钥
+cat ~/.ssh/id_ed25519_xiaowujiutian.pub
+````
+
+然后您需要：
+1. 复制新公钥内容
+2. 登录 `xiaowujiutian` 的GitHub账户
+3. 前往 Settings → SSH and GPG keys → New SSH key
+4. 粘贴公钥内容并保存
+
+## 方案2：配置SSH使用特定密钥
+
+````bash
+# 创建或编辑SSH配置文件
+nano ~/.ssh/config
+````
+
+在配置文件中添加：
+
+````
+# xiaowujiutian账户配置
+Host github-xiaowujiutian
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_xiaowujiutian
+
+# chinalnhsly账户配置（原有）
+Host github.com
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519
+````
+
+然后更新远程仓库地址：
+
+````bash
+git remote remove origin
+git remote add origin git@github-xiaowujiutian:xiaowujiutian/GBB.git
+````
+
+## 方案3：使用chinalnhsly账户的仓库（最简单）
+
+如果您更愿意使用现有的 `chinalnhsly` 账户：
+
+````bash
+# 更改为chinalnhsly的仓库
+git remote remove origin
+git remote add origin git@github.com:chinalnhsly/GBB.git
+
+# 推送代码
+git push -u origin main
+git push origin v1.0.0
+````
+
+## 更新您的Git文档
+
+````markdown
+# Git 常用命令速查
+
+## 账户信息
+- 当前Git用户: xiaowujiutian@hotmail.com
+- GitHub SSH密钥: 关联到chinalnhsly账户
+- 仓库地址: git@github.com:xiaowujiutian/GBB.git
+
+## GBB项目Git操作记录
+
+### 解决SSH密钥账户不匹配问题
+
+#### 方案1：生成新SSH密钥（推荐）
+```bash
+# 1. 为xiaowujiutian生成新SSH密钥
+ssh-keygen -t ed25519 -C "xiaowujiutian@hotmail.com" -f ~/.ssh/id_ed25519_xiaowujiutian
+
+# 2. 添加新密钥到ssh-agent
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519_xiaowujiutian
+
+# 3. 查看并添加公钥到GitHub
+cat ~/.ssh/id_ed25519_xiaowujiutian.pub
+```
+
+#### 方案2：SSH多账户配置
+```bash
+# 编辑SSH配置
+nano ~/.ssh/config
+
+# 配置内容：
+# Host github-xiaowujiutian
+#     HostName github.com
+#     User git
+#     IdentityFile ~/.ssh/id_ed25519_xiaowujiutian
+
+# 更新远程仓库
+git remote remove origin
+git remote add origin git@github-xiaowujiutian:xiaowujiutian/GBB.git
+```
+
+#### 当前临时解决方案
+```bash
+# 使用现有chinalnhsly账户
+git remote remove origin
+git remote add origin git@github.com:chinalnhsly/GBB.git
+git push -u origin main
+git push origin v1.0.0
+```
+
+### 验证SSH连接
+```bash
+# 测试SSH连接
+ssh -T git@github.com
+# 应该显示: Hi xiaowujiutian! You've successfully authenticated...
+
+# 如果使用多账户配置
+ssh -T git@github-xiaowujiutian
+```
+
+<!-- ...existing code... -->
+````
+
+## 建议
+
+考虑到您目前的情况，我建议您选择**方案3**作为临时解决方案，快速完成项目推送。如果后续需要使用 `xiaowujiutian` 账户，再按照方案1生成新的SSH密钥。
+
+您现在可以执行：
+
+````bash
+git remote remove origin
+git remote add origin git@github.com:chinalnhsly/GBB.git
+git push -u origin main
+git push origin v1.0.0
+````
+
+这样您就能立即完成代码推送了。

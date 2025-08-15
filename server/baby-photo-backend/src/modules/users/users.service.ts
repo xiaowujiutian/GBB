@@ -4,6 +4,7 @@ import {
   NotFoundException,
   BadRequestException,
   ConflictException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaService } from '../../shared/prisma/prisma.service';
 import { CacheService } from '../../shared/cache/cache.service';
@@ -11,6 +12,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserSearchDto } from './dto/user-search.dto';
 import { WxLoginDto } from './dto/wx-login.dto';
+import { AdminLoginDto } from './dto/admin-login.dto';
 import axios from 'axios';
 
 @Injectable()
@@ -620,6 +622,55 @@ export class UsersService {
       this.logger.error(`获取用户订单历史失败: ${error.message}`, error.stack);
       throw new BadRequestException('查询失败');
     }
+  }
+
+  /**
+   * 管理员登录
+   */
+  async adminLogin(adminLoginDto: AdminLoginDto) {
+    const { username, password } = adminLoginDto;
+
+    // 硬编码的管理员账户（开发环境）
+    const adminCredentials = [
+      { username: 'admin', password: 'admin123' },
+      { username: 'administrator', password: '123456' },
+    ];
+
+    const validAdmin = adminCredentials.find(
+      (admin) => admin.username === username && admin.password === password,
+    );
+
+    if (!validAdmin) {
+      throw new UnauthorizedException('用户名或密码错误');
+    }
+
+    // 查找或创建管理员用户记录
+    let adminUser = await this.prisma.user.findUnique({
+      where: { openid: `admin-${username}` },
+    });
+
+    if (!adminUser) {
+      adminUser = await this.prisma.user.create({
+        data: {
+          openid: `admin-${username}`,
+          nickname: username === 'admin' ? '系统管理员' : '超级管理员',
+          phone: username === 'admin' ? '18888888888' : '18999999999',
+        },
+      });
+    }
+
+    return {
+      success: true,
+      message: '登录成功',
+      data: {
+        id: adminUser.id,
+        openid: adminUser.openid,
+        nickname: adminUser.nickname,
+        phone: adminUser.phone,
+        isAdmin: true,
+        token: `admin-token-${Date.now()}`, // 简单的token，生产环境请使用JWT
+      },
+    };
   }
 
   // 私有辅助方法

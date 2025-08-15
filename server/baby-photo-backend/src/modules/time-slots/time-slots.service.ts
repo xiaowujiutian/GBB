@@ -9,7 +9,7 @@ import { CreateTimeSlotDto } from './dto/create-time-slot.dto';
 import { UpdateTimeSlotDto } from './dto/update-time-slot.dto';
 import { QueryTimeSlotsDto } from './dto/query-time-slots.dto';
 import { CreateBatchTimeSlotsDto } from './dto/create-batch-time-slots.dto';
-import type { TimeSlot } from '@prisma/client';
+import type { TimeSlot } from '../../../generated/prisma';
 
 @Injectable()
 export class TimeSlotsService {

@@ -43,9 +43,13 @@ model TimeSlot {
   endTime   DateTime @map("end_time") @db.Time(6)
   isBooked  Boolean  @default(false) @map("is_booked")
   createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
   orders    Order[]
 
   @@map("time_slots")
+  @@unique([date, startTime])
+  @@index([date])
+  @@index([isBooked])
 }
 
 model Order {

@@ -3,12 +3,12 @@ import { Form, Input, Button, Card, message, Checkbox } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Navigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '@/store';
-import { loginAsync } from '@/store/authSlice';
+import { login } from '@/store/authSlice';
 import './Login.css';
 
 const Login: React.FC = () => {
   const [form] = Form.useForm();
-  const { isAuthenticated, loading } = useAppSelector((state) => state.auth);
+  const { isAuthenticated, isLoading } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
   if (isAuthenticated) {
@@ -17,7 +17,7 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (values: { username: string; password: string; remember: boolean }) => {
     try {
-      await dispatch(loginAsync({
+      await dispatch(login({
         username: values.username,
         password: values.password,
       })).unwrap();
@@ -67,7 +67,7 @@ const Login: React.FC = () => {
             <Button
               type="primary"
               htmlType="submit"
-              loading={loading}
+              loading={isLoading}
               style={{ width: '100%' }}
             >
               登录
