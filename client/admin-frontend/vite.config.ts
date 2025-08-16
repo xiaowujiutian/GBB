@@ -23,10 +23,10 @@ export default defineConfig({
   
   // 开发服务器配置
   server: {
-    port: 3001,
+    port: 3001, // 修正：前端应使用3001端口
     proxy: {
       '/api': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:3000', // 后端服务端口3000
         changeOrigin: true,
         // 移除 rewrite，保持 /api 路径不变
         // rewrite: (path) => path.replace(/^\/api/, ''),

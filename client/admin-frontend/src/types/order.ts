@@ -1,33 +1,38 @@
-import { BaseEntity } from './common';
-import { User } from './user';
-import { Package } from './package';
+import { BaseEntity } from "./common";
 
 export enum OrderStatus {
-  PENDING = 'pending',
-  CONFIRMED = 'confirmed',
-  IN_PROGRESS = 'in_progress',
-  COMPLETED = 'completed',
-  CANCELLED = 'cancelled',
-  REFUNDED = 'refunded',
+  PENDING = "pending",
+  CONFIRMED = "confirmed",
+  IN_PROGRESS = "in_progress",
+  COMPLETED = "completed",
+  CANCELLED = "cancelled",
+  REFUNDED = "refunded",
 }
 
 export interface Order extends BaseEntity {
+  id: string;
   orderNo: string;
-  userId: string;
-  user?: User;
-  packageId: string;
-  package?: Package;
-  timeSlotId: string;
-  status: OrderStatus;
+  user: {
+    id: string;
+    nickname: string;
+    phone: string;
+  };
+  package: {
+    id: string;
+    name: string;
+    price: number;
+  };
+  timeSlot: {
+    id: string;
+    date: string;
+    startTime: string;
+    endTime: string;
+  };
   totalAmount: number;
-  paidAmount: number;
-  paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
-  paymentMethod?: 'wechat' | 'alipay' | 'cash';
+  status: "pending" | "confirmed" | "completed" | "cancelled";
   notes?: string;
-  cancelReason?: string;
-  refundReason?: string;
-  completedAt?: string;
-  cancelledAt?: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface OrderSearchParams {
@@ -38,6 +43,9 @@ export interface OrderSearchParams {
   packageId?: string;
   startDate?: string;
   endDate?: string;
+  userId?: string;
+  dateRange?: [string, string];
+  keyword?: string;
 }
 
 export interface OrderFormData {
@@ -50,6 +58,7 @@ export interface OrderFormData {
 export interface OrderStats {
   totalOrders: number;
   pendingOrders: number;
+  confirmedOrders: number;
   completedOrders: number;
   cancelledOrders: number;
   totalRevenue: number;

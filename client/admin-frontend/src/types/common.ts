@@ -1,19 +1,3 @@
-export interface ApiResponse<T = any> {
-  code: number;
-  message: string;
-  data: T;
-  success: boolean;
-}
-
-export interface PaginatedResponse<T> {
-  list: T[];
-  pagination: {
-    current: number;
-    pageSize: number;
-    total: number;
-  };
-}
-
 export interface BaseEntity {
   id: string;
   createdAt: string;
@@ -32,3 +16,19 @@ export enum Status {
   PENDING = 'pending',
   DELETED = 'deleted',
 }
+
+export interface PaginatedResponse<T> {
+  list: T[];
+  pagination: {
+    current: number;
+    pageSize: number;
+    total: number;
+  };
+}
+
+export interface ApiResponse<T = any> {
+  success: boolean;
+  message: string;
+  data: T;
+}
+

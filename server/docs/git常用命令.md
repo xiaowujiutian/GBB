@@ -1,29 +1,9 @@
-旧的公钥liyong@dely:~/gbb$ cat ~/.ssh/id_ed25519.pub
-ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL8hbLkVt7/E1W6gUt5rQF/Dg+QC4yAy20izjThGcqOj chinalnhsly@hotmail.com
-旧的私钥lnhsly66
-
-
-# Git 常用命令速查
-
-新库公钥liyong@dely:~/gbb$ cat ~/.ssh/id_ed25519_xiaowujiutian.pub
-新库私钥  空的
-
-ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBYSZ9WvTzD1QZIgxLN8h0T3V+jDbhD65sAK6uEeebZe xiaowujiutian@hotmail.com
-
 邮箱密码
     xiaowujiutian@hotmail.com   Xwjt-760707@
 SSH 地址：
    git@github.com:xiaowujiutian/GBB.git
 
-echo "# GBB" >> README.md
-git init
-git add README.md
-git commit -m "first commit"
-git branch -M main
-git remote add origin https://github.com/xiaowujiutian/GBB.git
-git push -u origin main
-git push origin v1.0.0
-##  git实际操作指南：
+
 # Git 常用命令速查
 
 ## GBB项目Git操作记录
@@ -74,25 +54,17 @@ git push origin v1.0.1     # 推送标签
 ```
 
 ## 常用命令速查
-<!-- ...existing code... -->
 
-
-
-# 1. 查看当前Git配置
+#### 1. 查看当前Git配置
 git config --list | grep user
 
-# 2. 如果需要更新为正确的用户名和邮箱
+#### 2. 如果需要更新为正确的用户名和邮箱
 git config --global user.name "xiaowujiutian"
 git config --global user.email "xiaowujiutian@hotmail.com"
 
-# 3. 验证配置是否更新
+#### 3. 验证配置是否更新
 git config --global user.name
 git config --global user.email
-
-
-
-
-
 
 #### 新项目git命令，初始化、创建、推送的实际操作：
 git status                             # 查看当前状态
@@ -126,14 +98,12 @@ git branch -M main
 git remote add origin https://github.com/xiaowujiutian/GBB.git
 git push -u origin main
 …or push an existing repository from the command line
-###### git remote add origin https://github.com/chinalnhsly/wxapp-frontend.git  旧仓库
-git branch -M main
-git push -u origin main
+
 ## 1. 基本配置
 
 ```bash
-git config --global user.name "你的名字"
-git config --global user.email "你的邮箱"
+git config --global user.name "xiaowujiutian"
+git config --global user.email "xiaowujiutian@hotmail.com"
 git config --list
 ```
 
@@ -153,6 +123,9 @@ git add .               # 添加所有文件到暂存区
 git rm <文件>           # 删除文件
 git mv <旧名> <新名>    # 重命名文件
 ```
+
+（使用 "git add <文件>..." 更新要提交的内容）
+ （使用 "git restore <文件>..." 丢弃工作区的改动）
 
 ## 4. 提交与日志
 
@@ -303,338 +276,418 @@ git push -u origin main
 git push origin v1.0.0
 ````
 
-## 更新您的Git文档
+### 🔧 SSH密钥冲突问题解决
 
-````markdown
-# Git 常用命令速查
-
-## 账户信息
-- 当前Git用户: xiaowujiutian@hotmail.com
-- GitHub SSH密钥: 关联到chinalnhsly账户
-- 仓库地址: git@github.com:xiaowujiutian/GBB.git
-
-## GBB项目Git操作记录
-
-### 解决SSH密钥账户不匹配问题
-
-#### 方案1：生成新SSH密钥（推荐）
+**❌ 当前问题：**
 ```bash
-# 1. 为xiaowujiutian生成新SSH密钥
-ssh-keygen -t ed25519 -C "xiaowujiutian@hotmail.com" -f ~/.ssh/id_ed25519_xiaowujiutian
-
-# 2. 添加新密钥到ssh-agent
-eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_ed25519_xiaowujiutian
-
-# 3. 查看并添加公钥到GitHub
-cat ~/.ssh/id_ed25519_xiaowujiutian.pub
-```
-
-#### 方案2：SSH多账户配置
-```bash
-# 编辑SSH配置
-nano ~/.ssh/config
-
-# 配置内容：
-# Host github-xiaowujiutian
-#     HostName github.com
-#     User git
-#     IdentityFile ~/.ssh/id_ed25519_xiaowujiutian
-
-# 更新远程仓库
-git remote remove origin
-git remote add origin git@github-xiaowujiutian:xiaowujiutian/GBB.git
-```
-
-#### 当前临时解决方案
-```bash
-# 使用现有chinalnhsly账户
-git remote remove origin
-git remote add origin git@github.com:chinalnhsly/GBB.git
-git push -u origin main
-git push origin v1.0.0
-```
-
-### 验证SSH连接
-```bash
-# 测试SSH连接
 ssh -T git@github.com
-# 应该显示: Hi xiaowujiutian! You've successfully authenticated...
+Hi chinalnhsly! You've successfully authenticated...
 
-# 如果使用多账户配置
-ssh -T git@github-xiaowujiutian
-```
-
-<!-- ...existing code... -->
-
-### ❌ 推送失败问题记录
-
-**错误信息：**
-```bash
+git push -u origin main  
 ERROR: Permission to xiaowujiutian/GBB.git denied to chinalnhsly.
-致命错误：无法读取远程仓库。
 ```
 
-**问题原因：**
-- 当前SSH密钥关联到 `chinalnhsly` 账户
-- 试图推送到 `xiaowujiutian/GBB.git` 仓库
-- 账户不匹配导致权限被拒绝
+**问题分析：**
+- SSH agent中存在多个密钥
+- 默认使用了chinalnhsly的密钥而非xiaowujiutian的密钥
+- 需要强制指定使用正确的密钥
 
 ### ✅ 立即解决方案
 
-**选择方案1：使用现有chinalnhsly账户（推荐，最快）**
+**方案1：清理SSH agent并重新添加（推荐）**
 
 ```bash
-# 1. 更改远程仓库为chinalnhsly账户
-git remote remove origin
-git remote add origin git@github.com:chinalnhsly/GBB.git
+# 1. 清理当前SSH agent中的所有密钥
+ssh-add -D
 
-# 2. 推送代码
+# 2. 只添加xiaowujiutian的密钥
+ssh-add ~/.ssh/id_ed25519_xiaowujiutian
+
+# 3. 验证当前加载的密钥
+ssh-add -l
+
+# 4. 测试SSH连接（应该显示xiaowujiutian）
+ssh -T git@github.com
+
+# 5. 推送代码
+git push -u origin main
+git push origin v1.0.0
+```
+
+**方案2：使用SSH配置文件强制指定密钥**
+
+```bash
+# 1. 创建SSH配置文件
+mkdir -p ~/.ssh
+cat > ~/.ssh/config << 'EOF'
+# xiaowujiutian账户专用配置
+Host github-xiaowu
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_xiaowujiutian
+    IdentitiesOnly yes
+
+# chinalnhsly账户配置
+Host github.com
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519
+    IdentitiesOnly yes
+EOF
+
+# 2. 设置权限
+chmod 600 ~/.ssh/config
+
+# 3. 更新Git远程地址使用专用Host
+git remote remove origin
+git remote add origin git@github-xiaowu:xiaowujiutian/GBB.git
+
+# 4. 测试连接
+ssh -T git@github-xiaowu
+
+# 5. 推送代码
+git push -u origin main
+git push origin v1.0.0
+```
+
+**方案3：临时指定SSH密钥推送**
+
+```bash
+# 1. 使用GIT_SSH_COMMAND临时指定密钥
+GIT_SSH_COMMAND="ssh -i ~/.ssh/id_ed25519_xiaowujiutian" git push -u origin main
+GIT_SSH_COMMAND="ssh -i ~/.ssh/id_ed25519_xiaowujiutian" git push origin v1.0.0
+
+# 2. 或者设置环境变量
+export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_ed25519_xiaowujiutian"
+git push -u origin main
+git push origin v1.0.0
+```
+
+### 🎯 推荐执行顺序（方案1最简单）
+
+```bash
+# 立即执行这些命令：
+ssh-add -D
+ssh-add ~/.ssh/id_ed25519_xiaowujiutian
+ssh -T git@github.com
+git push -u origin main
+git push origin v1.0.0
+```
+
+### 📋 SSH密钥管理状态
+
+**✅ 密钥文件状态：**
+```bash
+# 查看所有SSH密钥文件
+ls -la ~/.ssh/id_*
+
+# xiaowujiutian密钥
+~/.ssh/id_ed25519_xiaowujiutian      # 私钥
+~/.ssh/id_ed25519_xiaowujiutian.pub  # 公钥
+
+# chinalnhsly密钥  
+~/.ssh/id_ed25519      # 私钥
+~/.ssh/id_ed25519.pub  # 公钥
+```
+
+**✅ SSH Agent状态检查：**
+```bash
+# 查看当前加载的密钥
+ssh-add -l
+
+# 清理所有密钥
+ssh-add -D
+
+# 添加特定密钥
+ssh-add ~/.ssh/id_ed25519_xiaowujiutian
+```
+
+### 💡 验证SSH连接
+
+**正确的SSH测试结果应该显示：**
+```bash
+liyong@dely:~/gbb$ ssh -T git@github.com
+Hi xiaowujiutian! You've successfully authenticated, but GitHub does not provide shell access.
+```
+
+**如果显示chinalnhsly，说明仍在使用错误的密钥！**
+
+### 🚨 故障排除
+
+**如果方案1不工作，按顺序尝试：**
+
+1. **检查SSH agent进程：**
+   ```bash
+   ps aux | grep ssh-agent
+   killall ssh-agent
+   eval "$(ssh-agent -s)"
+   ssh-add ~/.ssh/id_ed25519_xiaowujiutian
+   ```
+
+2. **强制重启SSH服务：**
+   ```bash
+   sudo systemctl restart ssh
+   eval "$(ssh-agent -s)"
+   ssh-add ~/.ssh/id_ed25519_xiaowujiutian
+   ```
+
+3. **使用方案2或方案3作为备选方案**
+
+### 🚀 SSH密钥管理器冲突解决
+
+**❌ 新问题：**
+```
+ssh -T git@github.com 执行时弹出对话框：
+"一个应用程序想要访问chinalnhsly@hotmail.com"
+```
+
+**问题原因：**
+- 系统密钥管理器（GNOME Keyring）缓存了旧密钥
+- SSH agent被系统密钥管理器覆盖
+- 需要绕过或清理密钥管理器
+
+### ✅ 彻底解决方案
+
+**方案1：直接使用GIT_SSH_COMMAND强制指定密钥（最可靠）**
+
+```bash
+# 1. 不依赖SSH agent，直接指定密钥文件
+export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_ed25519_xiaowujiutian -o IdentitiesOnly=yes"
+
+# 2. 测试SSH连接
+ssh -i ~/.ssh/id_ed25519_xiaowujiutian -o IdentitiesOnly=yes -T git@github.com
+
+# 3. 推送代码（应该成功）
 git push -u origin main
 git push origin v1.0.0
 
-# 3. 验证推送成功
-git remote -v
+# 4. 取消环境变量（可选）
+unset GIT_SSH_COMMAND
 ```
 
-**选择方案2：为xiaowujiutian生成新SSH密钥**
+**方案2：禁用密钥管理器并重启SSH agent**
 
 ```bash
-# 1. 生成新SSH密钥
-ssh-keygen -t ed25519 -C "xiaowujiutian@hotmail.com" -f ~/.ssh/id_ed25519_xiaowujiutian
+# 1. 临时禁用GNOME Keyring SSH组件
+export SSH_AUTH_SOCK=""
 
-# 2. 添加到ssh-agent
+# 2. 杀死所有SSH agent进程
+killall ssh-agent 2>/dev/null
+
+# 3. 启动新的SSH agent
 eval "$(ssh-agent -s)"
+
+# 4. 只添加xiaowujiutian的密钥
 ssh-add ~/.ssh/id_ed25519_xiaowujiutian
 
-# 3. 查看公钥并添加到GitHub xiaowujiutian账户
-cat ~/.ssh/id_ed25519_xiaowujiutian.pub
-
-# 4. 配置SSH多账户
-nano ~/.ssh/config
-# 添加以下内容：
-# Host github-xiaowujiutian
-#     HostName github.com
-#     User git
-#     IdentityFile ~/.ssh/id_ed25519_xiaowujiutian
-
-# 5. 更新远程仓库地址
-git remote remove origin
-git remote add origin git@github-xiaowujiutian:xiaowujiutian/GBB.git
+# 5. 验证SSH连接
+ssh -T git@github.com
 
 # 6. 推送代码
 git push -u origin main
 git push origin v1.0.0
 ```
 
-### 📋 当前操作状态
-
-**✅ 已完成：**
-- 项目代码提交成功
-- commit 信息：`feat: server\baby-photo-backend端、client\admin-frontend端启动正常admin admin123`
-- 31个文件已修改，包含前端登录修复和后端API完善
-
-**❌ 待完成：**
-- 选择账户并推送到远程仓库
-- 创建版本标签
-
-### 🎯 推荐操作流程
+**方案3：创建专用SSH配置避免冲突**
 
 ```bash
-# 使用最简单的解决方案
+# 1. 创建专用SSH配置
+cat > ~/.ssh/config << 'EOF'
+# xiaowujiutian专用主机配置
+Host github-xiaowujiutian
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_xiaowujiutian
+    IdentitiesOnly yes
+    PreferredAuthentications publickey
+
+# 默认GitHub配置（chinalnhsly）
+Host github.com
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519
+    IdentitiesOnly yes
+EOF
+
+# 2. 设置权限
+chmod 600 ~/.ssh/config
+
+# 3. 更新Git远程地址
 git remote remove origin
-git remote add origin git@github.com:chinalnhsly/GBB.git
+git remote add origin git@github-xiaowujiutian:xiaowujiutian/GBB.git
+
+# 4. 测试连接（不应该弹出对话框）
+ssh -T git@github-xiaowujiutian
+
+# 5. 推送代码
 git push -u origin main
 git push origin v1.0.0
-
-# 验证推送结果
-git log --oneline -5
-git tag
 ```
 
-### 📝 系统当前状态
+### 🎯 推荐立即执行（方案1最简单可靠）
 
-**✅ 后端状态：**
-- 服务正常运行：http://localhost:3000
-- 管理员登录接口正常：POST /api/v1/users/admin-login
-- 登录凭据：admin / admin123 或 administrator / 123456
-
-**✅ 前端状态：**  
-- 开发服务器正常：http://localhost:3001
-- 登录功能已修复（loginAsync → login, loading → isLoading）
-- ProtectedRoute组件已清理未使用的导入
-
-**✅ Git状态：**
-- 本地提交完成，待推送到远程仓库
-- 需要解决SSH密钥账户匹配问题
-
-<!-- ...existing code... -->
-
-### 🎉 SSH连接成功！
-
-**验证结果：**
 ```bash
-liyong@dely:~/gbb$ ssh -T git@github.com
+# 强制指定SSH密钥，绕过密钥管理器
+export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_ed25519_xiaowujiutian -o IdentitiesOnly=yes"
+
+# 测试连接（应该显示xiaowujiutian，不弹对话框）
+ssh -i ~/.ssh/id_ed25519_xiaowujiutian -o IdentitiesOnly=yes -T git@github.com
+
+# 推送代码
+git push -u origin main
+git push origin v1.0.0
+```
+
+### 📋 密钥管理器问题说明
+
+**系统密钥管理器类型：**
+- GNOME Keyring（Ubuntu/GNOME桌面）
+- KDE Wallet（KDE桌面）
+- SSH Agent转发
+
+**识别当前密钥管理器：**
+```bash
+# 查看SSH_AUTH_SOCK环境变量
+echo $SSH_AUTH_SOCK
+
+# 如果包含"keyring"或"gnome"，说明使用GNOME Keyring
+# 例如：/run/user/1000/keyring/ssh
+
+# 查看当前SSH agent进程
+ps aux | grep -E "(ssh-agent|keyring)"
+```
+
+**临时禁用密钥管理器：**
+```bash
+# 方法1：清空SSH_AUTH_SOCK
+export SSH_AUTH_SOCK=""
+
+# 方法2：使用--no-use-agent选项
+ssh -o UseAgent=no -i ~/.ssh/id_ed25519_xiaowujiutian -T git@github.com
+```
+
+### 💡 长期解决方案
+
+**如果经常需要在多个GitHub账户间切换：**
+
+1. **配置~/.ssh/config文件（推荐）**
+2. **使用Git配置管理多个身份**
+3. **创建脚本快速切换SSH密钥**
+
+**脚本示例：**
+```bash
+# 创建密钥切换脚本
+cat > ~/switch-git-key.sh << 'EOF'
+#!/bin/bash
+if [ "$1" == "xiaowujiutian" ]; then
+    export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_ed25519_xiaowujiutian -o IdentitiesOnly=yes"
+    echo "切换到 xiaowujiutian SSH密钥"
+elif [ "$1" == "chinalnhsly" ]; then
+    export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes"  
+    echo "切换到 chinalnhsly SSH密钥"
+else
+    unset GIT_SSH_COMMAND
+    echo "使用默认SSH配置"
+fi
+EOF
+
+chmod +x ~/switch-git-key.sh
+
+# 使用方法：
+# source ~/switch-git-key.sh xiaowujiutian
+# git push origin main
+```
+
+### 🎉 SSH密钥问题解决成功！
+
+**✅ 成功操作记录：**
+```bash
+liyong@dely:~/gbb$ ssh -i ~/.ssh/id_ed25519_xiaowujiutian -o IdentitiesOnly=yes -T git@github.com
 Hi xiaowujiutian! You've successfully authenticated, but GitHub does not provide shell access.
-```
 
-✅ SSH密钥配置成功！现在可以直接推送代码了！
-
-### 🚀 立即推送代码
-
-```bash
-# 现在可以直接推送到xiaowujiutian/GBB.git仓库
-git push -u origin main
-git push origin v1.0.0
-
-# 验证推送结果
-git remote -v
-git log --oneline -3
-git tag
-```
-
-### 📋 最终操作状态
-
-**✅ SSH配置完成：**
-- xiaowujiutian SSH密钥已添加到GitHub
-- SSH连接验证成功
-- 可以直接推送到 xiaowujiutian/GBB.git
-
-**✅ 项目准备就绪：**
-- 本地代码已提交
-- 远程仓库地址正确：https://github.com/xiaowujiutian/GBB.git
-- 版本标签准备：v1.0.0
-
-**⏰ 下一步操作：**
-```bash
-git push -u origin main
-git push origin v1.0.0
-```
-
-### 🎯 成功推送后的验证
-
-```bash
-# 推送成功后验证
-git status
-git remote -v
-git log --oneline -5
-
-# 在GitHub上查看仓库
-# https://github.com/xiaowujiutian/GBB
-```
-
----
-
-**🚀 现在执行推送命令，您的代码就能成功上传到GitHub了！**
-
-git remote remove origin
-git remote add origin git@github.com:xiaowujiutian/GBB.git
-git push -u origin main
-git push origin v1.0.0
-
-### 🎉 代码推送成功！
-
-**推送结果：**
-```bash
-liyong@dely:~/gbb$ git remote remove origin
-git remote add origin git@github.com:xiaowujiutian/GBB.git
-git push -u origin main
-git push origin v1.0.0
-枚举对象中: 95, 完成.
-对象计数中: 100% (95/95), 完成.
-使用 4 个线程进行压缩
-压缩对象中: 100% (53/53), 完成.
-写入对象中: 100% (57/57), 131.35 KiB | 435.00 KiB/s, 完成.
-总共 57（差异 24），复用 0（差异 0），包复用 0
-remote: Resolving deltas: 100% (24/24), completed with 24 local objects.
-To github.com:xiaowujiutian/GBB.git
-   42703f6..5e283d8  main -> main
+liyong@dely:~/gbb$ git push -u origin main
 分支 'main' 设置为跟踪 'origin/main'。
 Everything up-to-date
 ```
 
-### ✅ 推送成功摘要
+**✅ 问题解决方案总结：**
+- 使用 `-i` 参数直接指定SSH私钥文件
+- 使用 `-o IdentitiesOnly=yes` 强制只使用指定密钥
+- 绕过了系统密钥管理器的干扰
+- 成功连接到xiaowujiutian GitHub账户
 
-**✅ 数据统计：**
-- 推送了 57 个对象
-- 数据量：131.35 KiB
-- 推送速度：435.00 KiB/s
-- 包含 24 个差异更改
+### 🚀 GBB项目推送完成状态
 
-**✅ Git状态：**
-- 主分支已设置为跟踪 `origin/main`
-- 版本标签 `v1.0.0` 推送成功
-- 提交范围：`42703f6..5e283d8`
-
-**✅ 仓库信息：**
+**✅ 当前仓库状态：**
 - 远程仓库：https://github.com/xiaowujiutian/GBB.git
-- SSH地址：git@github.com:xiaowujiutian/GBB.git
-- 主分支：main
+- 本地分支：main，已设置跟踪远程 origin/main
+- 推送状态：Everything up-to-date（所有内容已同步）
 
-### 🎯 项目完成状态
+**✅ 项目内容已成功推送：**
+- ✅ NestJS后端服务 (baby-photo-backend)
+- ✅ React管理前端 (admin-frontend) 
+- ✅ 微信小程序框架 (wxapp-frontend)
+- ✅ 数据库配置和API文档
+- ✅ Git配置和操作文档
 
-**✅ 完整的GBB管理系统已上传：**
+### 📋 后续操作建议
 
-**后端服务 (baby-photo-backend)：**
-- ✅ NestJS + Prisma + PostgreSQL
-- ✅ 用户管理、订单管理、套餐管理
-- ✅ 时间段管理 (TimeSlots)
-- ✅ 支付管理
-- ✅ 管理员登录接口：admin / admin123
-- ✅ 服务地址：http://localhost:3000
-- ✅ API文档：http://localhost:3000/api/docs
-
-**前端管理界面 (admin-frontend)：**
-- ✅ React + TypeScript + Antd + Redux
-- ✅ 登录功能已修复完成
-- ✅ 开发服务器：http://localhost:3001
-- ✅ 完整的管理后台界面
-
-**微信小程序 (wxapp-frontend)：**
-- ✅ 基础框架已包含
-
-### 📋 版本记录
-
-**v1.0.0 功能清单：**
-- ✅ 后端API服务完整搭建
-- ✅ 前端管理界面登录功能
-- ✅ 数据库结构设计完成
-- ✅ SSH密钥配置成功
-- ✅ GitHub仓库推送成功
-
-**提交信息：**
-```
-feat: server\baby-photo-backend端、client\admin-frontend端启动正常admin admin123
+**1. 创建版本标签：**
+```bash
+# 为当前完整功能创建版本标签
+git tag v1.0.0 -m "GBB管理系统初始版本：后端+前端管理界面完整功能"
+git push origin v1.0.0
 ```
 
-### 🚀 下一步开发建议
+**2. 设置长期SSH配置（避免每次都手动指定密钥）：**
+```bash
+# 方案A：设置环境变量（当前会话有效）
+export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_ed25519_xiaowujiutian -o IdentitiesOnly=yes"
 
-**后端开发：**
-1. 完善业务逻辑和数据验证
-2. 添加JWT认证和权限控制
-3. 优化API性能和错误处理
-4. 添加单元测试和集成测试
+# 方案B：添加到shell配置文件（永久有效）
+echo 'export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_ed25519_xiaowujiutian -o IdentitiesOnly=yes"' >> ~/.bashrc
+source ~/.bashrc
+```
 
-**前端开发：**
-1. 完善管理界面各个模块
-2. 添加数据可视化图表
-3. 优化用户体验和响应式设计
-4. 添加前端测试
+**3. 验证后续Git操作：**
+```bash
+# 测试正常的Git工作流
+git status
+git log --oneline -3
+git remote -v
 
-**微信小程序：**
-1. 完善小程序功能模块
-2. 集成微信支付
-3. 添加用户端预约功能
+# 测试后续推送（如果有新修改）
+# git add .
+# git commit -m "docs: 更新Git操作文档"  
+# git push origin main
+```
 
-### 🌐 项目访问地址
+### 💡 经验总结
 
-**GitHub仓库：** https://github.com/xiaowujiutian/GBB
-**本地开发：**
-- 后端：http://localhost:3000
-- 前端：http://localhost:3001
-- API文档：http://localhost:3000/api/docs
+**成功要点：**
+1. **强制指定SSH密钥**：使用 `-i ~/.ssh/id_ed25519_xiaowujiutian`
+2. **禁用其他身份验证**：使用 `-o IdentitiesOnly=yes`
+3. **绕过密钥管理器**：直接指定密钥文件而不依赖SSH agent
 
----
+**适用场景：**
+- 多个GitHub账户需要切换
+- 系统密钥管理器干扰SSH连接
+- SSH agent缓存了错误的密钥
 
-**🎉 恭喜！GBB乖宝宝儿童影楼管理系统 v1.0.0 成功上传到GitHub！**
+**推荐做法：**
+- 为不同账户使用不同的SSH密钥文件名
+- 创建SSH配置文件管理多账户
+- 使用环境变量快速切换SSH配置
+
+### 🎯 项目开发继续
+
+现在SSH配置已解决，可以正常进行：
+
+1. **继续开发新功能**
+2. **正常提交和推送代码**
+3. **创建分支进行功能开发**
+4. **与团队协作开发**
+
+**GBB管理系统现已完全部署到GitHub，可以开始正常的Git协作流程！** 🎉
+
 

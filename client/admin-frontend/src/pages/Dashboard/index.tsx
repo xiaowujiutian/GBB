@@ -61,6 +61,7 @@ const Dashboard: React.FC = () => {
     orderStats: {
       totalOrders: 0,
       pendingOrders: 0,
+      confirmedOrders: 0,
       completedOrders: 0,
       cancelledOrders: 0,
       totalRevenue: 0,
